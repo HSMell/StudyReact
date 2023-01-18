@@ -4,59 +4,51 @@
     <div id="root"></div>
   </body>
   <!-- react engine -->
-  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-  <!-- <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script> -->
+  <!-- <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script> -->
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
   <!-- for render -->
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
   <!-- <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script> -->
   <!-- transfer to JSX -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Check for PropType -->
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
 
   <script type="text/babel">
-    const root = document.getElementById("root");
+    const Btn = ({ text, fontSize = 16 }) => {
+      return (
+        <button
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+            fontSize: fontSize,
+          }}
+        >
+          {text}
+        </button>
+      );
+    };
+
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number.isRequired,
+    };
 
     const App = () => {
-      const [amount, setAmount] = React.useState();
-      const [inverted, setInverted] = React.useState(false);
-      const onChange = (event) => {
-        setAmount(event.target.value);
-      };
-      const reset = () => setAmount(0);
-      const onFlip = () => {
-        reset();
-        setInverted((current) => !current);
-      };
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          <h1 className="hi">Super Converter</h1>
-          <div>
-            <label htmlFor="minutes">Minutes</label>
-            <input
-              value={inverted ? amount * 60 : amount}
-              id="minutes"
-              placeholder="Minutes"
-              type="number"
-              onChange={onChange}
-              disabled={inverted}
-            />
-          </div>
-          <div>
-            <label htmlFor="hours">Hours</label>
-            <input
-              value={inverted ? amount : Math.round(amount / 60)}
-              id="hours"
-              placeholder="Hours"
-              type="number"
-              onChange={onChange}
-              disabled={!inverted}
-            />
-          </div>
-          <button onClick={reset}>Reset</button>
-          <button onClick={onFlip}>{inverted ? "Turn back" : "Invert"}</button>
+          <Btn text="Save Changes" fontSize={18} />
+          <Btn text={"Continue"} />
         </div>
       );
     };
 
+    const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
   </script>
 </html>
